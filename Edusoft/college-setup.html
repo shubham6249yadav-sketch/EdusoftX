@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb"><title>Register your college | EdusoftX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css"><script src="auth.js" defer></script><script src="college-setup.js" defer></script>
+</head>
+<body>
+  <main class="login-layout">
+    <section class="login-intro">
+      <a class="brand" href="login.html"><span class="brand-mark">E</span><span class="brand-name">Edusoft<span>X</span><small>COLLEGE PORTAL</small></span></a>
+      <div class="intro-copy"><span class="intro-label">COLLEGE ADMINISTRATION</span><h1>Set up your<br>college portal.</h1><p>Create your college identity and director account. You can add Heads of Department after signing in.</p><div class="intro-art" aria-hidden="true"><span class="art-sun"></span><span class="art-building"><i></i><i></i><i></i><i></i><b></b></span><span class="art-ground"></span></div></div>
+      <span class="intro-footer">A smarter campus experience</span>
+    </section>
+    <section class="login-content">
+      <div class="login-card setup-card">
+        <a class="back-link" href="director-login.html">← Director sign in</a>
+        <p class="eyebrow">FIRST-TIME SETUP</p><h2>Register your college</h2><p class="card-description">Your college details and logo will appear across every portal.</p>
+        <form class="login-form" id="collegeSetupForm">
+          <label for="collegeName">College name</label><input id="collegeName" name="collegeName" type="text" placeholder="e.g. Greenfield Institute of Technology" maxlength="80" required>
+          <label for="collegeCode">College code</label><input id="collegeCode" name="collegeCode" type="text" placeholder="e.g. GIT2026" maxlength="20" required>
+          <label for="collegeLogo">College logo <span class="optional-label">Optional · PNG, JPEG or WebP up to 1 MB</span></label><input id="collegeLogo" name="collegeLogo" type="file" accept="image/png,image/jpeg,image/webp">
+          <div class="logo-preview" id="logoPreview" hidden><img alt="Selected college logo preview"><span></span></div>
+          <label for="directorName">Director name</label><input id="directorName" name="directorName" type="text" placeholder="Your full name" maxlength="80" required>
+          <label for="identity">Director login email</label><input id="identity" name="identity" type="email" placeholder="e.g. director@college.edu" autocomplete="email" required>
+          <label for="password">Create password</label><input id="password" name="password" type="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
+          <label for="confirmPassword">Confirm password</label><input id="confirmPassword" name="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" minlength="8" required>
+          <p class="login-message" role="status" hidden></p>
+          <button class="sign-in-button" type="submit">Create college &amp; director account <span>→</span></button>
+        </form>
+        <p class="demo-note"><span>i</span> Your college and Director account will be saved in the secure college database.</p>
+      </div>
+      <footer class="login-footer"><span>© 2026 <span data-college-name>EdusoftX</span> Portal</span><span>College branding will appear on all portal pages</span></footer>
+    </section>
+  </main>
+</body>
+</html>

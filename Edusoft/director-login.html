@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f4"><title>Director / Admin sign in | EdusoftX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css"><script src="auth.js" defer></script><script src="login.js" defer></script>
+</head>
+<body data-role="director">
+  <main class="login-layout">
+    <section class="login-intro">
+      <a class="brand" href="login.html"><span class="brand-mark">E</span><span class="brand-name">Edusoft<span>X</span><small>COLLEGE PORTAL</small></span></a>
+      <div class="intro-copy"><span class="intro-label">YOUR CAMPUS, CONNECTED</span><h1>A clearer view<br>of your college.</h1><p>Oversee college-wide academic activity and keep your campus operations connected.</p><div class="intro-art" aria-hidden="true"><span class="art-sun"></span><span class="art-building"><i></i><i></i><i></i><i></i><b></b></span><span class="art-ground"></span></div></div>
+      <span class="intro-footer">A smarter campus experience</span>
+    </section>
+    <section class="login-content">
+      <div class="login-card">
+        <a class="back-link" href="login.html">← All portals</a>
+        <div class="portal-icon director-icon large-portal-icon">⌂</div>
+        <p class="eyebrow">DIRECTOR / ADMIN PORTAL</p><h2>Welcome back</h2><p class="card-description">Sign in to continue to college administration.</p>
+        <form class="login-form">
+          <label for="identity">College email or admin ID</label><input id="identity" name="identity" type="text" placeholder="e.g. admin@college.edu" autocomplete="username" required>
+          <div class="password-label"><label for="password">Password</label><a href="#" data-demo-link>Forgot password?</a></div><input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+          <button class="sign-in-button" type="submit">Sign in to Admin Portal <span>→</span></button>
+          <p class="login-message" role="status" hidden></p>
+        </form>
+        <a class="create-account-link" id="collegeRegisterLink" href="college-setup.html">First time here? Register your college as Director</a>
+        <p class="demo-note"><span>i</span> Sign in with the Director account created during college setup.</p>
+      </div>
+      <footer class="login-footer"><span>© 2026 <span data-college-name>EdusoftX</span> Portal</span><span>Need help? Contact your college office</span></footer>
+    </section>
+  </main>
+</body>
+</html>

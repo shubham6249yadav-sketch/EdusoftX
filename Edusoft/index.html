@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>EdusoftX | College Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="auth.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="EdusoftX home">
+        <span class="brand-mark">E</span>
+        <span class="brand-name">Edusoft<span>X</span><small>COLLEGE PORTAL</small></span>
+      </a>
+
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+        <button class="nav-link" data-view="attendance"><span class="nav-icon">◷</span>Attendance</button>
+        <button class="nav-link" data-view="timetable"><span class="nav-icon">▦</span>Timetable</button>
+        <button class="nav-link" data-view="notices"><span class="nav-icon">▤</span>Notice board <span class="nav-count" id="noticeNavCount">0</span></button>
+        <button class="nav-link" data-view="marks"><span class="nav-icon">✎</span>Assignments &amp; marks</button>
+        <button class="nav-link" data-view="leaves"><span class="nav-icon">◷</span>Leave requests <span class="nav-count" id="leaveNavCount" hidden>0</span></button>
+        <button class="nav-link" id="managementNav" data-view="management" hidden><span class="nav-icon">♙</span><span id="managementNavLabel">People &amp; access</span></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-icon">?</div>
+          <strong>Need a hand?</strong>
+          <p>Reach out to your college office for support.</p>
+          <button type="button" class="help-link">Contact support <span>↗</span></button>
+        </div>
+        <button class="profile-mini" type="button">
+          <span class="avatar avatar-purple">ED</span>
+          <span class="profile-copy"><strong>EdusoftX</strong><small>College Portal</small></span>
+          <span class="more">···</span>
+        </button>
+        <button class="logout-link" id="logoutButton" type="button">Sign out <span>↗</span></button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuToggle" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb">Pages <span>/</span> <strong id="breadcrumbCurrent">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <span class="current-role" id="currentRole"></span>
+          <button class="icon-button notification-button" aria-label="Notifications">♧<i></i></button>
+          <span class="avatar avatar-purple top-avatar">AS</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="view-panel active" id="view-dashboard">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow" id="todayLabel">WEDNESDAY, OCTOBER 28</p>
+              <h1>Welcome, <span id="welcomeName">Student</span> <span class="wave">✦</span></h1>
+              <p class="subheading" id="welcomeSubtitle">Here’s what’s happening with your classes today.</p>
+            </div>
+            <button class="button button-primary" data-go="timetable"><span>＋</span> View today’s schedule</button>
+          </div>
+
+          <article class="panel student-profile-panel student-only" id="studentProfilePanel" hidden>
+            <div class="panel-heading"><div><h2>My student profile</h2><p>Your college, course and assigned support contacts.</p></div><span class="semester-pill">MY PROFILE</span></div>
+            <dl class="student-profile-grid">
+              <div><dt>Student</dt><dd id="profileStudentName">—</dd></div>
+              <div><dt>Roll number</dt><dd id="profileStudentRollNumber">—</dd></div>
+              <div><dt>Date of birth</dt><dd id="profileStudentDob">—</dd></div>
+              <div><dt>Father’s name</dt><dd id="profileStudentFather">—</dd></div>
+              <div><dt>Department</dt><dd id="profileDepartment">—</dd></div>
+              <div><dt>Course / section</dt><dd id="profileSection">Not assigned</dd></div>
+              <div><dt>Faculty mentor</dt><dd id="profileMentor">Not assigned</dd></div>
+              <div><dt>Head of Department</dt><dd id="profileHod">Not assigned</dd></div>
+            </dl>
+          </article>
+          <div class="role-banner">
+            <span class="banner-icon">✦</span>
+            <div><strong id="roleBannerTitle">Your semester, at a glance</strong><p id="roleBannerText">Stay on top of attendance, classes and coursework — all in one place.</p></div>
+            <span class="banner-decoration">✳</span>
+          </div>
+
+          <div class="stat-grid" id="studentStats">
+            <article class="stat-card"><div class="stat-top"><span>First lecture attendance</span><span class="stat-icon peach">★</span></div><div class="stat-value" id="studentFirstLecturePercent">—</div><div class="stat-foot" id="studentFirstLectureCount">First lecture is counted separately</div><div class="mini-progress"><i id="studentFirstLectureBar" style="width:0%"></i></div></article>
+            <article class="stat-card"><div class="stat-top"><span>All lectures attended</span><span class="stat-icon lilac">▦</span></div><div class="stat-value" id="studentLecturePercent">—</div><div class="stat-foot" id="studentLectureCount">Every subject lecture counts</div><div class="stat-note">Recorded lecture by lecture</div></article>
+            <article class="stat-card"><div class="stat-top"><span>Assignments due</span><span class="stat-icon peach">✎</span></div><div class="stat-value" id="studentAssignmentsDue">0</div><div class="stat-foot" id="studentAssignmentsFoot">Published for your section</div><div class="stat-note" id="studentAssignmentNote">No upcoming assignments</div></article>
+            <article class="stat-card"><div class="stat-top"><span>Average marks</span><span class="stat-icon blue">✧</span></div><div class="stat-value"><span id="studentAverageMarks">—</span><span class="unit" id="studentAverageUnit" hidden>%</span></div><div class="stat-foot">Across your published assessments</div><div class="stat-note" id="studentMarksNote">No assessment marks available</div></article>
+          </div>
+
+          <div class="stat-grid role-stats" id="staffStats" hidden>
+            <article class="stat-card"><div class="stat-top"><span id="staffStatOne">Department attendance</span><span class="stat-icon peach">★</span></div><div class="stat-value" id="staffFirstLecturePercent">—</div><div class="stat-foot" id="staffFirstLectureCount">First lectures counted separately</div><div class="mini-progress"><i id="staffFirstLectureBar" style="width:0%"></i></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Lectures recorded today</span><span class="stat-icon lilac">▦</span></div><div class="stat-value" id="staffLecturesToday">0</div><div class="stat-foot"><span class="neutral">Attendance for each class</span></div><div class="stat-note">View the lecture register</div></article>
+            <article class="stat-card"><div class="stat-top"><span>Leave requests to review</span><span class="stat-icon peach">↺</span></div><div class="stat-value" id="staffPendingLeaves">0</div><div class="stat-foot"><span class="due">Needs your attention</span></div><div class="stat-note" id="staffLeaveStatus">Mentor and HoD workflow</div></article>
+            <article class="stat-card"><div class="stat-top"><span>Managed sections</span><span class="stat-icon blue">✧</span></div><div class="stat-value" id="staffSectionCount">0</div><div class="stat-foot"><span class="neutral">One faculty mentor per section</span></div><div class="stat-note">See section assignments</div></article>
+          </div>
+
+          <div class="quick-actions-panel panel">
+            <div class="quick-actions-heading"><h2>Quick actions</h2><span id="quickActionCaption">Your campus at a glance</span></div>
+            <div class="quick-actions">
+              <button data-go="attendance" data-role-allow="faculty,hod,director"><span class="quick-action-icon mint">◷</span><strong>Lecture attendance</strong></button>
+              <button data-go="leaves" data-role-allow="student"><span class="quick-action-icon peach">＋</span><strong>Request leave</strong></button>
+              <button data-go="management" data-role-allow="hod,director"><span class="quick-action-icon lilac">♙</span><strong>Manage sections</strong></button>
+              <button data-go="timetable"><span class="quick-action-icon blue">▦</span><strong>View timetable</strong></button>
+              <button data-go="marks"><span class="quick-action-icon peach">✎</span><strong>Assignments &amp; marks</strong></button>
+            </div>
+          </div>
+
+          <div class="dashboard-grid reference-grid">
+            <article class="panel lecture-dashboard-panel">
+              <div class="panel-heading"><div><h2>Lecture attendance today</h2><p>Every lecture is recorded separately. The first lecture is highlighted and counted separately.</p></div><button class="text-button" data-go="attendance">Attendance register <span>→</span></button></div>
+              <div class="lecture-list" id="dashboardLectureList"></div>
+              <div class="first-lecture-callout"><span class="first-lecture-star">★</span><div><strong>First lecture of the day has its own attendance count</strong><small>It is always the first scheduled lecture, regardless of subject.</small></div><span class="first-lecture-value" id="firstLectureSummary">—</span></div>
+            </article>
+            <article class="panel schedule-panel">
+              <div class="panel-heading"><div><h2>Today’s timetable</h2><p>Today’s classes and lecture order</p></div><button class="text-button" data-go="timetable">Full timetable <span>→</span></button></div>
+              <div class="timeline" id="dashboardTimetablePreview"></div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel section-dashboard-panel" id="dashboardSectionsPanel">
+              <div class="panel-heading"><div><h2>Sections &amp; mentors</h2><p>Every section has one assigned faculty mentor.</p></div><button class="text-button" data-go="management">Manage sections <span>→</span></button></div>
+              <div id="dashboardSectionList" class="dashboard-section-list"></div>
+            </article>
+            <article class="panel leave-dashboard-panel">
+              <div class="panel-heading"><div><h2>Leave requests</h2><p id="leavePanelSubtitle">Mentor contact → HoD final approval</p></div><button class="text-button" data-go="leaves">View requests <span>→</span></button></div>
+              <div id="dashboardLeaveList" class="dashboard-leave-list"></div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel attendance-panel">
+              <div class="panel-heading"><div><h2>Subject attendance</h2><p>Each lecture is recorded; first-lecture attendance is also counted separately.</p></div><button class="text-button" data-go="attendance">View all <span>→</span></button></div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>SUBJECT</th><th>LECTURES ATTENDED</th><th>SUBJECT ATTENDANCE</th><th>FIRST LECTURES</th></tr></thead>
+                  <tbody id="dashboardSubjectAttendance"></tbody>
+                </table>
+              </div>
+              <div class="attendance-rule"><span>★</span> First lecture is the day’s first scheduled class, no matter which subject it is.</div>
+            </article>
+
+            <article class="panel schedule-panel">
+              <div class="panel-heading"><div><h2>Today’s timetable</h2><p>Wednesday · Semester 5</p></div><button class="text-button" data-go="timetable">Full timetable <span>→</span></button></div>
+              <div class="timeline" id="dashboardTimetablePreviewSecondary"></div>
+            </article>
+          </div>
+
+          <div class="bottom-grid">
+            <article class="panel notice-panel">
+              <div class="panel-heading"><div><h2>Notice board</h2><p>Latest updates from your college</p></div><button class="text-button" data-go="notices">All notices <span>→</span></button></div>
+              <div id="dashboardNoticePreview" class="dashboard-notice-list"></div>
+            </article>
+            <article class="panel approvals-panel">
+              <div class="panel-heading"><div><h2>Attendance corrections</h2><p>Requests close at 04:50 PM</p></div><span class="pending-badge">2 pending</span></div>
+              <div class="approval-item"><span class="avatar avatar-orange">RK</span><div class="approval-copy"><strong>Riya Kapoor</strong><small>Database Systems · Oct 27</small></div><span class="status-pending">Pending HoD</span></div>
+              <div class="approval-item"><span class="avatar avatar-blue">AM</span><div class="approval-copy"><strong>Aditya Mehra</strong><small>Data Structures · Oct 27</small></div><span class="status-pending">Pending HoD</span></div>
+              <button class="button button-outline full-button" data-go="attendance">Review requests <span>→</span></button>
+            </article>
+          </div>
+        </section>
+
+        <section class="view-panel" id="view-attendance">
+          <div class="page-heading"><div><p class="eyebrow">ACADEMIC RECORDS</p><h1>Attendance</h1><p class="subheading">Subject-wise records, official percentage and correction requests.</p></div><button class="button button-primary" id="openCorrection">＋ Request correction</button></div>
+          <div class="info-banner"><span class="banner-icon">i</span><div><strong>How your official attendance is calculated</strong><p>Every subject has its own class attendance record. The official attendance percentage is calculated from first-lecture attendance: lectures attended ÷ lectures held × 100.</p></div></div>
+          <div class="attendance-summary-grid">
+            <article class="stat-card first-lecture-stat"><div class="stat-top"><span>First lecture attendance · all subjects</span><span class="stat-icon peach">★</span></div><div class="stat-value" id="attendanceFirstLecturePercent">—</div><div class="stat-foot" id="attendanceFirstLectureCount">No first-lecture records yet</div><div class="stat-note">Counted separately from all other lectures.</div></article>
+            <article class="stat-card"><div class="stat-top"><span>All lecture attendance</span><span class="stat-icon mint">◷</span></div><div class="stat-value" id="attendanceAllLecturePercent">—</div><div class="stat-foot" id="attendanceAllLectureCount">No lecture records yet</div><div class="stat-note">Each subject lecture is recorded individually.</div></article>
+          </div>
+          <article class="panel student-only subject-pie-panel" id="studentSubjectPiePanel" hidden><div class="panel-heading"><div><h2>My attendance by subject</h2><p>Each circle shows the share of that subject’s lectures you attended.</p></div><span class="semester-pill">SUBJECT-WISE</span></div><div class="subject-pie-grid" id="studentSubjectPieCharts"></div></article>
+          <article class="panel subject-attendance-panel"><div class="panel-heading"><div><h2>Subject attendance</h2><p>Attendance from each lecture, with first lecture also tracked separately above.</p></div><span class="semester-pill">LECTURE-WISE</span></div><div class="table-wrap"><table class="wide-table"><thead><tr><th>SUBJECT</th><th>LECTURES ATTENDED</th><th>SUBJECT ATTENDANCE</th><th>FIRST LECTURES</th></tr></thead><tbody id="subjectAttendanceList"></tbody></table></div><p class="empty-accounts" id="emptySubjectAttendance" hidden>No subject attendance has been recorded yet.</p></article>
+          <article class="panel faculty-only" id="lectureAttendancePanel" hidden>
+            <div class="panel-heading"><div><h2>Record attendance for a lecture</h2><p>Each lecture gets its own attendance record. Mark the first scheduled lecture of the day separately, regardless of subject.</p></div><span class="today-pill">TODAY</span></div>
+            <form class="account-form attendance-entry-form" id="lectureAttendanceForm">
+              <label>Section<select name="section" required></select></label>
+              <label>Subject<select name="subject" required><option value="">Select an assigned subject</option></select></label>
+              <label>Lecture number<input name="lectureNumber" type="number" min="1" max="12" value="1" required></label>
+              <label>Lecture time<input name="lectureTime" type="time" required></label>
+              <label class="first-lecture-checkbox"><input name="firstLecture" type="checkbox"><span>Mark as the first lecture of the day <small>(first scheduled lecture, any subject)</small></span></label>
+              <div class="roster-field"><span class="roster-label">Student attendance</span><div id="lectureRoster" class="lecture-roster"></div></div>
+              <button class="button button-primary" type="submit">Save this lecture’s attendance</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel lecture-records-panel">
+            <div class="panel-heading"><div><h2>Lecture-by-lecture records</h2><p>Individual lecture attendance plus the separately tracked first-lecture count.</p></div><span class="semester-pill" id="lectureRecordCount">0 lectures</span></div>
+            <div class="table-wrap"><table class="wide-table"><thead><tr><th>DATE / TIME</th><th>LECTURE</th><th>SUBJECT</th><th>SECTION</th><th>ATTENDED</th><th>FIRST LECTURE</th></tr></thead><tbody id="lectureRecordList"></tbody></table></div>
+            <p class="empty-accounts" id="emptyLectureRecords" hidden>No lecture attendance has been recorded yet.</p>
+          </article>
+          <div class="dashboard-grid attendance-lower">
+            <article class="panel"><div class="panel-heading"><div><h2>Correction requests</h2><p>Requests must be submitted by 04:50 PM.</p></div><span class="pending-badge">HOD approval required</span></div><div id="correctionList"></div></article>
+            <article class="panel deadline-card"><span class="deadline-icon">◷</span><p class="eyebrow">CORRECTION WINDOW</p><h2>Closes at 04:50 PM</h2><p>Submit a correction request on the same day. Your Head of Department reviews and approves each request.</p><div class="deadline-foot"><span class="deadline-dot"></span>Requests after the deadline can’t be submitted</div><button class="button button-primary full-button" id="openCorrection2">Request attendance correction</button></article>
+          </div>
+        </section>
+
+        <section class="view-panel" id="view-timetable">
+          <div class="page-heading"><div><p class="eyebrow">YOUR WEEK</p><h1>Class timetable</h1><p class="subheading">Semester 5 · Computer Science · Room changes are posted on the notice board.</p></div><span class="semester-pill">MON – FRI</span></div>
+          <div class="panel timetable-full">
+            <div class="panel-heading"><div><h2>Weekly timetable</h2><p>Your section’s published classes</p></div><span class="today-pill" id="timetableSectionName">SECTION</span></div>
+            <div class="table-wrap"><table class="wide-table"><thead><tr><th>DAY</th><th>TIME</th><th>SUBJECT</th><th>FACULTY</th><th>ROOM</th><th>SECTION</th></tr></thead><tbody id="timetableList"></tbody></table></div>
+            <p class="empty-accounts" id="emptyTimetable" hidden>No timetable has been published for your section yet.</p>
+          </div>
+          <article class="panel content-publish-panel" id="timetablePublishPanel" hidden>
+            <div class="panel-heading"><div><h2>Publish a timetable class</h2><p>HoDs and assigned section mentors can publish classes.</p></div></div>
+            <form class="account-form" id="timetableForm">
+              <label>Section<select name="section" required></select></label>
+              <label>Day<select name="weekday" required><option value="">Choose day</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select></label>
+              <label>Subject<input name="subject" maxlength="100" required></label>
+              <label>Faculty name<input name="facultyName" maxlength="80" required></label>
+              <label>Start time<input name="startTime" type="time" required></label>
+              <label>End time<input name="endTime" type="time" required></label>
+              <label>Room / venue<input name="room" maxlength="60" required></label>
+              <button class="button button-primary" type="submit">Publish timetable class</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+        </section>
+
+        <section class="view-panel" id="view-notices">
+          <div class="page-heading"><div><p class="eyebrow">CAMPUS UPDATES</p><h1>Notice board</h1><p class="subheading">Important announcements and updates from your college.</p></div><button class="button button-primary staff-only" hidden id="postNotice">＋ Post a notice</button></div>
+          <article class="panel content-publish-panel" id="noticePublishPanel" hidden>
+            <div class="panel-heading"><div><h2>Publish a notice</h2><p>Director posts college-wide or department notices; HoDs post for their department.</p></div></div>
+            <form class="account-form" id="noticeForm">
+              <label>Notice title<input name="title" maxlength="120" required></label>
+              <label>Category<select name="category" required><option value="academic">Academic</option><option value="event">Event</option><option value="general">General</option></select></label>
+              <label class="director-only" id="noticeDepartmentField">Department (optional for college-wide notice)<select name="department"><option value="">All college</option></select></label>
+              <label class="publish-message-field">Notice details<textarea name="body" maxlength="1500" rows="4" required></textarea></label>
+              <button class="button button-primary" type="submit">Publish notice</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <div class="notice-list panel" id="noticeList"></div>
+          <p class="empty-accounts" id="emptyNotices" hidden>No notices have been published yet.</p>
+        </section>
+
+        <section class="view-panel" id="view-marks">
+          <div class="page-heading"><div><p class="eyebrow">COURSEWORK &amp; RESULTS</p><h1>Assignments &amp; marks</h1><p class="subheading">Keep track of upcoming submissions and your assessment scores.</p></div><button class="button button-primary staff-only" hidden id="addMarks">＋ Add marks</button></div>
+          <article class="panel content-publish-panel" id="assignmentPublishPanel" hidden>
+            <div class="panel-heading"><div><h2>Publish an assignment</h2><p>Only the faculty mentor assigned to a section can publish work there.</p></div></div>
+            <form class="account-form" id="assignmentForm">
+              <label>Section<select name="section" required></select></label>
+              <label>Subject<input name="subject" maxlength="100" required></label>
+              <label>Assignment title<input name="title" maxlength="120" required></label>
+              <label>Due date<input name="dueDate" type="date" required></label>
+              <label class="publish-message-field">Instructions<textarea name="description" maxlength="1500" rows="3"></textarea></label>
+              <button class="button button-primary" type="submit">Publish assignment</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <div class="panel"><div class="panel-heading"><div><h2>Assignments</h2><p>Work and due dates published for your section</p></div></div><div class="table-wrap"><table class="wide-table"><thead><tr><th>ASSIGNMENT</th><th>SUBJECT</th><th>SECTION</th><th>DUE DATE</th><th>INSTRUCTIONS</th></tr></thead><tbody id="assignmentList"></tbody></table></div><p class="empty-accounts" id="emptyAssignments" hidden>No assignments have been published for your section.</p></div>
+          <article class="panel content-publish-panel marks-panel" id="markPublishPanel" hidden>
+            <div class="panel-heading"><div><h2>Upload class-test / assignment marks</h2><p>Upload marks only for subjects assigned to you. HoD and Director can review the results.</p></div></div>
+            <form class="account-form" id="markForm">
+              <label>Section<select name="section" required></select></label>
+              <label>Student<select name="student" required><option value="">Select a section first</option></select></label>
+              <label>Subject<select name="subject" required><option value="">Select a section first</option></select></label>
+              <label>Assessment type<select name="assessmentType" required><option value="class-test">Class test</option><option value="assignment">Assignment</option></select></label>
+              <label>Test / assignment name<input name="assessment" maxlength="100" placeholder="CT 1 or Assignment 1" required></label>
+              <label>Assessment date<input name="testDate" type="date" required></label>
+              <label>Marks obtained<input name="score" type="number" min="0" step="0.01" required></label>
+              <label>Maximum marks<input name="maxScore" type="number" min="0.01" step="0.01" required></label>
+              <button class="button button-primary" type="submit">Upload marks</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <div class="panel marks-panel"><div class="panel-heading"><div><h2>Assessment marks</h2><p>Students see their results; HoD and Director can review department and college marks.</p></div></div><div class="table-wrap"><table class="wide-table"><thead><tr><th>TYPE</th><th>SUBJECT</th><th>ASSESSMENT</th><th>DATE</th><th>STUDENT</th><th>SCORE</th><th>RESULT</th></tr></thead><tbody id="marksList"></tbody></table></div><p class="empty-accounts" id="emptyMarks" hidden>No assessment marks have been published yet.</p></div>
+        </section>
+
+        <section class="view-panel" id="view-management">
+          <div class="page-heading"><div><p class="eyebrow" id="managementEyebrow">PORTAL ADMINISTRATION</p><h1 id="managementTitle">People &amp; access</h1><p class="subheading" id="managementDescription">Create role accounts and manage who can sign in to this college portal.</p></div></div>
+          <article class="panel director-only" id="collegeIdentityPanel" hidden>
+            <div class="panel-heading"><div><h2>College identity</h2><p>Shown on all student, faculty, HoD and Director portal pages.</p></div><span class="semester-pill" data-college-code></span></div>
+            <form class="account-form" id="collegeIdentityForm">
+              <label>College name<input name="collegeName" type="text" maxlength="80" required></label>
+              <label>College code<input name="collegeCode" type="text" maxlength="20" required></label>
+              <label>Update college logo<input name="collegeLogo" type="file" accept="image/png,image/jpeg,image/webp"></label>
+              <div class="logo-preview" id="dashboardLogoPreview" hidden><img alt="Selected college logo preview"><span></span></div>
+              <button class="button button-primary" type="submit">Save college identity</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel director-only account-panel" id="createHodPanel" hidden>
+            <div class="panel-heading"><div><h2>Create a Head of Department</h2><p>The HoD can create faculty accounts for their assigned department.</p></div></div>
+            <form class="account-form" id="createHodForm">
+              <label>HoD full name<input name="name" type="text" maxlength="80" placeholder="e.g. Dr. Neha Rao" required></label>
+              <label>Department<input name="department" type="text" maxlength="80" placeholder="e.g. Computer Science" required></label>
+              <label>HoD login email<input name="email" type="email" placeholder="hod@college.edu" required></label>
+              <label>Password (use the existing password to add another role)<input name="password" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required></label>
+              <button class="button button-primary" type="submit">Create HoD account</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel hod-only account-panel" id="createFacultyPanel" hidden>
+            <div class="panel-heading"><div><h2>Create a faculty account</h2><p>New faculty will be assigned to <strong id="hodDepartmentLabel"></strong>.</p></div></div>
+            <form class="account-form" id="createFacultyForm">
+              <label>Faculty full name<input name="name" type="text" maxlength="80" placeholder="e.g. Prof. Anil Mehta" required></label>
+              <label id="facultyDepartmentField">Department<input name="department" type="text" maxlength="80" placeholder="e.g. Computer Science" required></label>
+              <label>Faculty login email<input name="email" type="email" placeholder="faculty@college.edu" required></label>
+              <label>Password (use the existing password to add another role)<input name="password" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required></label>
+              <button class="button button-primary" type="submit">Create faculty account</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel hod-only account-panel" id="createStudentPanel" hidden>
+            <div class="panel-heading"><div><h2>Create a student account</h2><p>Roll number and date of birth are used at sign-in; a password is generated automatically.</p></div></div>
+            <form class="account-form" id="createStudentForm">
+              <label>Student full name<input name="name" type="text" maxlength="80" placeholder="e.g. Shubham Kumar Yadav" required></label>
+              <label>Roll number<input name="rollNumber" type="text" maxlength="30" placeholder="e.g. 2504220100156" required></label>
+              <label>Date of birth<input name="dateOfBirth" type="date" required></label>
+              <label>Father’s name<input name="fatherName" type="text" maxlength="80" placeholder="e.g. Deepak Yadav" required></label>
+              <label>Assign to section<select name="section" required><option value="">Select a section</option></select></label>
+              <button class="button button-primary" type="submit">Create student &amp; assign section</button><p class="account-message credential-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel director-only account-panel" id="directorStudentPanel" hidden>
+            <div class="panel-heading"><div><h2>Create a student account</h2><p>Add a student to a college section. The generated password is shown after creation.</p></div></div>
+            <form class="account-form" id="directorStudentForm">
+              <label>Student full name<input name="name" type="text" maxlength="80" required></label>
+              <label>Roll number<input name="rollNumber" type="text" maxlength="30" required></label>
+              <label>Date of birth<input name="dateOfBirth" type="date" required></label>
+              <label>Father’s name<input name="fatherName" type="text" maxlength="80" required></label>
+              <label>Assign to section<select name="section" required><option value="">Select a section</option></select></label>
+              <button class="button button-primary" type="submit">Create student &amp; assign section</button><p class="account-message credential-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel hod-only account-panel" id="createSectionPanel" hidden>
+            <div class="panel-heading"><div><h2>Create a section &amp; assign its mentor</h2><p>Each section requires one faculty mentor. Faculty must be in your department.</p></div></div>
+            <form class="account-form" id="createSectionForm">
+              <label>Section name / code<input name="name" type="text" maxlength="60" placeholder="e.g. CS-A / Semester 5-A" required></label>
+              <label>Course / year<input name="course" type="text" maxlength="60" placeholder="e.g. B.Tech CSE · Year 3" required></label>
+              <label>Assign faculty mentor<select name="mentor" required><option value="">Create faculty accounts first</option></select></label>
+              <button class="button button-primary" type="submit">Create section &amp; assign mentor</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel hod-only account-panel" id="subjectOfferingPanel" hidden>
+            <div class="panel-heading"><div><h2>Choose subjects for sections</h2><p>Select one or more subjects, then choose every section where each subject is taught.</p></div></div>
+            <form class="account-form subject-offering-form" id="subjectOfferingForm">
+              <div class="subject-offering-choices" id="subjectOfferingChoices"></div>
+              <button class="button button-primary" type="submit">Save subject-section choices</button><p class="account-message" role="status" hidden></p>
+            </form>
+            <div class="panel-heading mentor-roster-heading"><div><h2>Assign faculty by section and subject</h2><p>Choose faculty for all section subjects, then save them together.</p></div></div>
+            <form class="subject-faculty-assignment-form" id="subjectFacultyAssignmentForm">
+              <div class="table-wrap"><table class="wide-table"><thead><tr><th>SECTION</th><th>SUBJECT</th><th>FACULTY</th></tr></thead><tbody id="subjectFacultyAssignments"></tbody></table></div>
+              <button class="button button-primary" type="submit">Save all faculty assignments</button>
+              <p class="account-message" role="status" hidden></p>
+            </form>
+            <p class="empty-accounts" id="emptySubjectFacultyAssignments" hidden>Add subjects to sections above, then assign a faculty member to each one.</p>
+          </article>
+          <article class="panel hod-only account-panel" id="assignStudentPanel" hidden>
+            <div class="panel-heading"><div><h2>Assign students to a section</h2><p>Students inherit their section’s assigned faculty mentor for leave requests.</p></div></div>
+            <form class="account-form" id="assignStudentForm">
+              <label>Student account<select name="student" required><option value="">Select a student</option></select></label>
+              <label>Section<select name="section" required><option value="">Create a section first</option></select></label>
+              <button class="button button-primary" type="submit">Assign student to section</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel faculty-only account-panel" id="mentorStudentPanel" hidden>
+            <div class="panel-heading"><div><h2>Add a student to my section</h2><p>Create the student login and assign them directly to one of your mentored sections.</p></div></div>
+            <form class="account-form" id="mentorStudentForm">
+              <label>Section<select name="section" required><option value="">Select your section</option></select></label>
+              <label>Student full name<input name="name" type="text" maxlength="80" placeholder="e.g. Shubham Kumar Yadav" required></label>
+              <label>Roll number<input name="rollNumber" type="text" maxlength="30" placeholder="e.g. 2504220100156" required></label>
+              <label>Date of birth<input name="dateOfBirth" type="date" required></label>
+              <label>Father’s name<input name="fatherName" type="text" maxlength="80" placeholder="e.g. Deepak Yadav" required></label>
+              <button class="button button-primary" type="submit">Create student &amp; add to section</button><p class="account-message credential-message" role="status" hidden></p>
+            </form>
+            <div class="panel-heading mentor-roster-heading"><div><h2>Students in my sections</h2><p>Only students assigned to your mentor sections are listed.</p></div></div>
+            <div class="table-wrap"><table class="wide-table"><thead><tr><th>STUDENT</th><th>ROLL NUMBER</th><th>DATE OF BIRTH</th><th>FATHER’S NAME</th><th>SECTION</th><th>ACTIONS</th></tr></thead><tbody id="mentorStudentList"></tbody></table></div>
+            <p class="empty-accounts" id="emptyMentorStudents" hidden>No students have been added to your sections yet.</p>
+            <div class="panel-heading mentor-roster-heading"><div><h2>Student deletion requests</h2><p>The HoD must approve a request before the student account and linked database records are permanently deleted.</p></div></div>
+            <div class="leave-request-list" id="mentorDeletionRequestList"></div>
+            <p class="empty-accounts" id="emptyMentorDeletionRequests" hidden>No student deletion requests yet.</p>
+          </article>
+          <article class="panel account-panel hod-only" id="deletionApprovalPanel" hidden>
+            <div class="panel-heading"><div><h2>Student deletion approvals</h2><p>Approving permanently deletes the student account and linked attendance, marks, leave and correction records.</p></div></div>
+            <div class="leave-request-list" id="deletionApprovalList"></div>`
+            <p class="empty-accounts" id="emptyDeletionApprovals" hidden>No student deletion requests await your approval.</p>
+          </article>
+          <article class="panel section-management-panel" id="sectionManagementPanel">
+            <div class="panel-heading"><div><h2>Department sections &amp; assigned mentors</h2><p>Section mentor assignments and student counts.</p></div></div>
+            <div class="table-wrap"><table class="wide-table"><thead><tr><th>SECTION</th><th>COURSE / YEAR</th><th>FACULTY MENTOR</th><th>STUDENTS</th></tr></thead><tbody id="sectionList"></tbody></table></div>
+            <p class="empty-accounts" id="emptySections" hidden>No sections have been created yet.</p>
+          </article>
+          <article class="panel account-panel" id="accountDirectoryPanel">
+            <div class="panel-heading"><div><h2 id="accountListTitle">Accounts</h2><p>Portal accounts registered for this college.</p></div></div>
+            <div class="table-wrap"><table class="wide-table"><thead><tr><th>NAME</th><th>EMAIL / LOGIN ID</th><th>ROLE</th><th>DEPARTMENT</th><th>ACTIONS</th></tr></thead><tbody id="accountList"></tbody></table></div>
+            <p class="empty-accounts" id="emptyAccounts" hidden>No accounts created yet.</p>
+          </article>
+          <p class="demo-note account-security-note" id="accountSecurityNote"><span>i</span> Director and HoD deletions remove accounts and related records from the shared database. Mentor student deletions require HoD approval first.</p>
+        </section>
+
+        <section class="view-panel" id="view-leaves">
+          <div class="page-heading"><div><p class="eyebrow">STUDENT SUPPORT</p><h1>Leave requests</h1><p class="subheading">Student → assigned mentor contacts family → mentor forwards → HoD gives final approval.</p></div><button class="button button-primary student-only" id="openLeaveRequest">＋ Request leave</button></div>
+          <div class="info-banner"><span class="banner-icon">i</span><div><strong>Family confirmation and HoD approval are part of the process</strong><p>The assigned section mentor contacts the listed parent, guardian or family member and records the conversation before forwarding the request. The HoD makes the final decision.</p></div></div>
+          <article class="panel student-only leave-request-panel" id="studentLeaveFormPanel" hidden>
+            <div class="panel-heading"><div><h2>New leave request</h2><p id="studentMentorInfo">Your section’s assigned mentor will review this request.</p></div></div>
+            <form class="account-form" id="leaveRequestForm">
+              <label>Leave from<input name="fromDate" type="date" required></label>
+              <label>Leave through<input name="toDate" type="date" required></label>
+              <label>Reason for leave<input name="reason" type="text" maxlength="240" placeholder="Briefly explain why you need leave" required></label>
+              <label>Parent / guardian / family contact name<input name="guardianName" type="text" maxlength="80" placeholder="Name of family member" required></label>
+              <label>Relationship to student<input name="guardianRelation" type="text" maxlength="40" placeholder="Parent, guardian, sibling..." required></label>
+              <label>Family contact phone<input name="guardianPhone" type="tel" maxlength="20" placeholder="Contact number for mentor verification" required></label>
+              <button class="button button-primary" type="submit">Submit to assigned mentor</button><p class="account-message" role="status" hidden></p>
+            </form>
+          </article>
+          <article class="panel leave-workflow-panel"><div class="panel-heading"><div><h2 id="leaveListHeading">My leave requests</h2><p>Review status and approval progress.</p></div></div><div id="leaveRequestList" class="leave-request-list"></div><p class="empty-accounts" id="emptyLeaveRequests" hidden>No leave requests to show.</p></article>
+        </section>
+
+        <footer class="footer"><span>© 2026 <span data-college-name>EdusoftX</span> Portal</span><span>College data is securely stored in the backend database</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="correctionDialog" class="modal">
+    <form method="dialog" id="correctionForm">
+      <div class="modal-heading"><div><p class="eyebrow">ATTENDANCE</p><h2>Request a correction</h2></div><button class="modal-close" aria-label="Close dialog">×</button></div>
+      <p class="modal-description">Submit by <strong>04:50 PM</strong>. Your HoD must approve this request.</p>
+      <label class="form-field">Subject<select required><option value="">Select a subject</option><option>Data Structures</option><option>Database Systems</option><option>Computer Networks</option><option>Discrete Mathematics</option><option>Operating Systems</option></select></label>
+      <label class="form-field">Lecture date<input type="date" required></label>
+      <label class="form-field">Lecture time<input type="time" required></label>
+      <label class="form-field">Reason<textarea rows="3" placeholder="Briefly explain the correction..." required></textarea></label>
+      <p class="form-error" id="deadlineError" hidden>Correction requests can only be submitted before 04:50 PM.</p>
+      <div class="modal-actions"><button type="button" class="button button-outline" id="cancelCorrection">Cancel</button><button type="submit" class="button button-primary">Send for HoD approval</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="accountEditDialog" class="modal">
+    <form id="accountEditForm">
+      <div class="modal-heading"><div><p class="eyebrow">ACCOUNT MANAGEMENT</p><h2>Edit account</h2></div><button type="button" class="modal-close" id="closeAccountEdit" aria-label="Close dialog">×</button></div>
+      <p class="modal-description" id="accountEditDescription">Update account details.</p>
+      <input name="accountId" type="hidden">
+      <label class="form-field">Full name<input name="name" type="text" maxlength="80" required></label>
+      <label class="form-field account-edit-staff">Login email<input name="email" type="email" maxlength="254" required></label>
+      <label class="form-field account-edit-student">Roll number<input name="rollNumber" type="text" maxlength="30" required></label>
+      <label class="form-field account-edit-student">Date of birth<input name="dateOfBirth" type="date" required></label>
+      <label class="form-field account-edit-student">Father’s name<input name="fatherName" type="text" maxlength="80" required></label>
+      <label class="form-field account-edit-section">Section<select name="section" required></select></label>
+      <p class="account-message" id="accountEditMessage" role="status" hidden></p>
+      <div class="modal-actions"><button type="button" class="button button-outline" id="cancelAccountEdit">Cancel</button><button type="submit" class="button button-primary">Save changes</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
